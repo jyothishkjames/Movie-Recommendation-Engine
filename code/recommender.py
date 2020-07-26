@@ -38,6 +38,7 @@ class Recommender:
         learning_rate - (float) the learning rate
         iters - (int) the number of iterations
         """
+
         # Store inputs as attributes
         self.reviews = pd.read_csv(reviews_pth)
         self.movies = pd.read_csv(movies_pth)
@@ -115,6 +116,27 @@ class Recommender:
         OUTPUT:
         pred - the predicted rating for user_id-movie_id according to FunkSVD
         """
+
+        try:  # User row and Movie Column
+            user_row = np.where(self.user_ids_series == user_id)[0][0]
+            movie_col = np.where(self.movie_ids_series == movie_id)[0][0]
+
+            # Take dot product of that row and column in U and V to make prediction
+            pred = np.dot(self.user_mat[user_row, :], self.movie_mat[:, movie_col])
+
+            movie_name = str(self.movies[self.movies['movie_id'] == movie_id]['movie'])[5:]
+            movie_name = movie_name.replace('\nName: movie, dtype: object', '')
+            print(
+                "For user {} we predict a {} rating for the movie {}.".format(user_id, round(pred, 2), str(movie_name)))
+
+            return pred
+
+        except:
+            print(
+                "I'm sorry, but a prediction cannot be made for this user-movie pair.  It looks like one of these "
+                "items does not exist in our current database.")
+
+            return None
 
     def make_recommendations(self, _id, _id_type='movie', rec_num=5):
         """
