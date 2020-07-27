@@ -9,8 +9,12 @@ def get_movie_names(movie_ids, movies_df):
     movies_df - original movies dataframe
     OUTPUT
     movies - a list of movie names associated with the movie_ids
-
     """
+
+    # Read in the datasets
+    movie_lst = list(movies_df[movies_df['movie_id'].isin(movie_ids)]['movie'])
+
+    return movie_lst
 
 
 def create_ranked_df(movies, reviews):
