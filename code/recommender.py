@@ -149,3 +149,34 @@ class Recommender:
         recs - (array) a list or numpy array of recommended movies like the
                        given movie, or recs for a user_id given
         """
+
+        # if the user is available from the matrix factorization data,
+        # I will use this and rank movies based on the predicted values
+        # For use with user indexing
+        rec_ids, rec_names = None, None
+        if _id_type == 'user':
+            if _id in self.user_ids_series:
+                # Get the index of which row the user is in for use in U matrix
+                idx = np.where(self.user_ids_series == _id)[0][0]
+
+                # take the dot product of that row and the V matrix
+                preds = np.dot(self.user_mat[idx,:],self.movie_mat)
+
+                # pull the top movies according to the prediction
+                indices = preds.argsort()[-rec_num:][::-1] #indices
+                rec_ids = self.movie_ids_series[indices]
+                rec_names = rf.get_movie_names(rec_ids, self.movies)
+
+            else:
+                # if we don't have this user, give just top ratings back
+                rec_names = rf.popular_recommendations(_id, rec_num, self.ranked_movies)
+                print("Because this user wasn't in our database, we are giving back the top movie recommendations for all users.")
+
+        # Find similar movies if it is a movie that is passed
+        else:
+            if _id in self.movie_ids_series:
+                rec_names = list(rf.find_similar_movies(_id, self.movies))[:rec_num]
+            else:
+                print("That movie doesn't exist in our database.  Sorry, we don't have any recommendations for you.")
+
+        return rec_ids, rec_names
