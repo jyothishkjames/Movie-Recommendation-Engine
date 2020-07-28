@@ -59,6 +59,21 @@ def find_similar_movies(movie_id, movies_df):
     similar_movies - an array of the most similar movies by title
     """
 
+    # dot product to get similar movies
+    movie_content = np.array(movies_df.iloc[:, 4:])
+    dot_prod_movies = movie_content.dot(np.transpose(movie_content))
+
+    # find the row of each movie id
+    movie_idx = np.where(movies_df['movie_id'] == movie_id)[0][0]
+
+    # find the most similar movie indices - to start I said they need to be the same for all content
+    similar_idxs = np.where(dot_prod_movies[movie_idx] == np.max(dot_prod_movies[movie_idx]))[0]
+
+    # pull the movie titles based on the indices
+    similar_movies = np.array(movies_df.iloc[similar_idxs,]['movie'])
+
+    return similar_movies
+
 
 def popular_recommendations(user_id, n_top, ranked_movies):
     """
@@ -70,3 +85,7 @@ def popular_recommendations(user_id, n_top, ranked_movies):
     OUTPUT:
     top_movies - a list of the n_top recommended movies by movie title in order best to worst
     """
+
+    top_movies = list(ranked_movies['movie'][:n_top])
+
+    return top_movies
