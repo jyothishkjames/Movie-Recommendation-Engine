@@ -19,13 +19,13 @@ Prerequisites
 Table of Contents
 -----------------
 
-####I. Exploratory Data Analysis
+#### I. Exploratory Data Analysis
 
-####II. Rank Based Recommendations
+#### II. Rank Based Recommendations
 
-####III. User-User Based Collaborative Filtering
+#### III. User-User Based Collaborative Filtering
 
-####IV. Matrix Factorization
+#### IV. Matrix Factorization
 
 
 
