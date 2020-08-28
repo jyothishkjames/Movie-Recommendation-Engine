@@ -3,8 +3,8 @@
 Getting Started
 ---------------
 
-This repository implements a Movie recommendation engine which recommends movies 
-to different users using FlunkSVD, Knowledge Based Recommendation and Content Based 
+This repository implements a Movie Recommendation Engine which recommends new movies 
+to different users with FlunkSVD, Knowledge Based Recommendation and Content Based 
 Recommendation.
 
 Prerequisites
